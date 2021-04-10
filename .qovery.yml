@@ -1,0 +1,11 @@
+---
+application:
+  name: "pinguess-py"
+  project: "random=project"
+  organization: "QoveryCommunity"
+routers:
+- name: "main-pinguess-py"
+  routes:
+  - application_name: "pinguess-py"
+    paths:
+    - "/*"
