@@ -66,38 +66,31 @@ class pin():
 
     def check(self):
       print("\nResults:")
-      for i in range(0,4):    # Changes number
-        if i == 0:
-          self.nmbr = self.n1
-        elif i == 1:
-          self.nmbr = self.n2
-        elif i == 2:
-          self.nmbr = self.n3
-        elif i == 3:
-          self.nmbr = self.n4
-
-        if self.lst[i] == self.lst1[i]:
+      try:
+        for i in range(0,4):    # Changes number
+          if i == 0: self.nmbr = self.n1
+          elif i == 1: self.nmbr = self.n2
+          elif i == 2: self.nmbr = self.n3
+          elif i == 3: self.nmbr = self.n4
+          if self.lst[i] == self.lst1[i]:
             print("#",i+1," Correct!")
             self.nmbr = 1
-        elif self.lst[i] < self.lst1[i]:
+          elif self.lst[i] < self.lst1[i]:
             print("#",i+1," Less")
             self.nmbr = 0
-        elif self.lst[i] > self.lst1[i]:
+          elif self.lst[i] > self.lst1[i]:
             print("#",i+1," More")
             self.nmbr = 0
+          if i == 0: self.n1 = self.nmbr
+          elif i == 1: self.n2 = self.nmbr
+          elif i == 2: self.n3 = self.nmbr
+          elif i == 3: self.n4 = self.nmbr
 
-        if i == 0:
-          self.n1 = self.nmbr
-        elif i == 1:
-          self.n2 = self.nmbr
-        elif i == 2:
-          self.n3 = self.nmbr
-        elif i == 3:
-          self.n4 = self.nmbr
+        del self.lst1[0:]
+        self.counter-=1         # Counter minus one
 
-      self.counter-=1         # Counter minus one
 
-      if self.n1 and self.n2 and self.n3 and self.n4 == 1:  # If you win
+        if self.n1 and self.n2 and self.n3 and self.n4 == 1:  # If you win
           print("\nWow, you're so good at this.")
           sleep(5)
           self.win+=1
@@ -111,25 +104,32 @@ class pin():
           del self.lst[0:4]     # deletes automated list
           self.switchnums()
 
-      if self.counter == 0:   # If you run out of guesses
-        print("Game over...")
-        sleep(2)
-        print("The correct numbers for this is ",self.n)
-        sleep(2)
-        self.loss+=1
-        self.score()
-        sleep(3)
-        print("Restarting list...")
-        del self.lst[0:4]
-        self.switchnums()
-      else:
-        del self.lst1[0:4]      # deletes guessing list
-        if self.dbg == 1:
-          print(self.lst1)        # prints and checks if list is deleted
-        self.guess()          # If not, take another guess
+        if self.counter == 0:   # If you run out of guesses
+          print("Game over...")
+          sleep(2)
+          print("The correct numbers for this is ",self.n)
+          sleep(2)
+          self.loss+=1
+          self.score()
+          sleep(3)
+          print("Restarting list...")
+          del self.lst[0:4]
+          self.switchnums()
+        else:
+          del self.lst1[0:4]      # deletes guessing list
+          if self.dbg == 1:
+            print(self.lst1)        # prints and checks if list is deleted
+          self.guess()          # If not, take another guess
+      except IndexError:
+        print("\nPlease use a 4 number guess.\n")
+        del self.lst1[0:]   # deletes input guessing list to start a new one
+        self.guess()
+      except:
+        print("We don't know what happened...")
+        self.guess()
 
     def score(self):        # Prints scoreboard
-        print("\nScoreboard\n","_"*10,"Wins:",self.win,"\nLosses:",self.loss,"\n")
+        print("\nScoreboard\n","_"*10,"\n Wins:",self.win,"\n Losses:",self.loss,"\n","_"*10)
 
 
 obj = pin()
