@@ -3,6 +3,14 @@ from time import sleep
 
 class pin():
     def __init__(self):
+        # Game Settings
+        # Guesses (Safe to change)
+        self.counter = 5
+        
+        # win / loss count (Safe to change, but if you do, you are a cheater!)
+        self.win = 0
+        self.loss = 0
+        
         # Guessing strings
         self.n = 0000
         self.lst = []
@@ -10,9 +18,6 @@ class pin():
         # Input Strings
         self.inp1 = 0
         self.lst1 = []
-
-        # Count down
-        self.counter = 5
 
         # Correct numbers
         self.n1 = 0
@@ -26,9 +31,7 @@ class pin():
         # debug (-1 to activate)
         self.dbg = 0
 
-        # win / loss count
-        self.win = 0
-        self.loss = 0
+
         # self.ratio = self.win / self.loss
 
     def toggledebugmode(self):
@@ -42,9 +45,11 @@ class pin():
 
     def switchnums(self):
         self.n = randrange(1000,9999)   # Random number from 1000 - 9999
+        
         if self.dbg == 1:
           print(self.n)                   # Shows random number
         self.n = str(self.n)
+        
         for l in self.n:                # Coverts number into list
           self.lst.append(l)
           if self.dbg == 1:
@@ -63,7 +68,7 @@ class pin():
               print(self.lst1)      # Checks if numbers made it on list
         self.check()
 
-
+    # Checks the guessed number
     def check(self):
       print("\nResults:")
       try:
