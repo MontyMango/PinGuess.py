@@ -14,11 +14,11 @@ class pin_game:
 
         # Guessing strings
         self.n = 0000
-        self.lst = []
+        self.correct_num_list = []
 
         # Input Strings
         self.inp1 = 0
-        self.lst1 = []
+        self.input_list = []
 
         # debug (-1 to activate)
         self.debug_mode_on = False
@@ -41,9 +41,9 @@ class pin_game:
         self.n = str(self.n)
 
         for l in self.n:                # Coverts number into list
-            self.lst.append(l)
+            self.correct_num_list.append(l)
             if self.debug_mode_on:
-                print(self.lst)
+                print(self.correct_num_list)
 
         self.counter = 5                # Sets counter back to 5
         print("Ready to play! If you want to quit, do Ctrl + C to exit the game\n\n")
@@ -68,9 +68,9 @@ class pin_game:
 
     def put_num_into_list(self):
         for f in self.inp1:         # Coverts guess into list
-            self.lst1.append(f)
+            self.input_list.append(f)
             if self.debug_mode_on:
-                print(self.lst1)      # Checks if numbers made it on list
+                print(self.input_list)      # Checks if numbers made it on list
 
     def show_answer(self):
         if self.debug_mode_on:
@@ -87,18 +87,22 @@ class pin_game:
             for i in range(1, 5):    # Changes number
                 number_on_list = i - 1
 
-                if self.lst[number_on_list] == self.lst1[number_on_list]:
+                # This helped me out here: https://stackoverflow.com/questions/15558392/how-can-i-check-if-character-in-a-string-is-a-letter-python
+                if (self.correct_num_list[number_on_list].isalpha()):
+                    print("You must input a number instead of a letter!")
+                    break
+                elif self.correct_num_list[number_on_list] == self.input_list[number_on_list]:
                     print("#", i, " Correct!")
                     total_correct += 1
-                elif self.lst[number_on_list] < self.lst1[number_on_list]:
+                elif self.correct_num_list[number_on_list] < self.input_list[number_on_list]:
                     print("#", i, " Less")
-                elif self.lst[number_on_list] > self.lst1[number_on_list]:
+                elif self.correct_num_list[number_on_list] > self.input_list[number_on_list]:
                     print("#", i, " More")
 
                 if self.debug_mode_on:
                     print(total_correct)
 
-            del self.lst1[0:]
+            self.input_list = []            # Erase the entire input list 
             self.counter -= 1         # Counter minus one
 
             if total_correct == 4:  # If you win
@@ -111,8 +115,8 @@ class pin_game:
                 sleep(1)
                 print("Generating new pin...")
                 sleep(1)
-                del self.lst1[0:4]    # deletes guessing list
-                del self.lst[0:4]     # deletes automated list
+                self.input_list = [ ]           # deletes guessing list
+                self.correct_num_list = [ ]     # deletes automated list
                 self.switchnums()
 
             elif self.counter == 0:   # If you run out of guesses
@@ -124,14 +128,14 @@ class pin_game:
                 self.score()
                 sleep(3)
                 print("Restarting list...")
-                del self.lst[0:4]
+                self.correct_num_list = [ ]
                 self.switchnums()
 
             else:
-                del self.lst1[0:4]      # deletes guessing list
+                self.input_list = [ ]      # deletes guessing list
                 if self.debug_mode_on:
                     # prints and checks if list is deleted
-                    print(self.lst1)
+                    print(self.input_list)
 
         # User didn't put enough numbers for the pin
         # guess() should now handle this error
@@ -139,15 +143,15 @@ class pin_game:
         except IndexError:
             print("\nPlease use a 4 number guess.\n")
             # deletes input guessing list to start a new one
-            del self.lst1[0:]
+            del self.input_list[0:]
 
         # User wants to quit
         except KeyboardInterrupt:
             print("\nThanks for playing!")
-            exit
 
         except:
             print("We don't know what happened...")
+            del self.input_list[0:]
 
     def score(self):        # Prints scoreboard
         print("\nScoreboard\n", "_"*10, "\n Wins:", self.win,
