@@ -48,6 +48,8 @@ class pin_game:
         self.counter = 5                # Sets counter back to 5
         print("Ready to play! If you want to quit, do Ctrl + C to exit the game\n\n")
 
+
+
     def guess(self):
         while (self.counter != 0):
             print("\n\nGuesses Left: " + str(self.counter))
@@ -61,16 +63,21 @@ class pin_game:
             elif self.inp1 == "-2":
                 self.show_answer()
             elif len(self.inp1) == 4:
-                self.put_num_into_list()
-                self.check()
+                self.put_into_input_list()
+                if(self.check_if_valid_list()):
+                    self.check()
             else:
                 print("You need to input a 4 pin number")
 
-    def put_num_into_list(self):
+
+
+    def put_into_input_list(self):
         for f in self.inp1:         # Coverts guess into list
             self.input_list.append(f)
             if self.debug_mode_on:
-                print(self.input_list)      # Checks if numbers made it on list
+                print("Input List:", self.input_list)      # Checks if numbers made it on list
+
+
 
     def show_answer(self):
         if self.debug_mode_on:
@@ -78,8 +85,28 @@ class pin_game:
         else:
             print("You cheater! You are not going to get the answer!")
 
-    # Checks the guessed number
 
+
+    # Checks if the list is an integer list
+    def check_if_valid_list(self):
+        for num_in_list in range(0,4):
+
+            if(self.debug_mode_on):
+                print("is element " + str(self.input_list[num_in_list]) + " a character?: " + str(self.input_list[num_in_list].isalpha()))
+
+            # Check if the element is a character
+            # This helped me out here: https://stackoverflow.com/questions/15558392/how-can-i-check-if-character-in-a-string-is-a-letter-python
+            if (self.input_list[num_in_list].isalpha()):
+                if(self.debug_mode_on):
+                    print("! - check_if_valid_list breaking out! See ya later!")
+                print("You must input a number instead of a letter!")
+                del self.input_list[0:]     # Clear list
+                return False
+        return True
+            
+
+
+    # Checks the guessed number
     def check(self):
         print("\nResults:")
         try:
@@ -87,11 +114,7 @@ class pin_game:
             for i in range(1, 5):    # Changes number
                 number_on_list = i - 1
 
-                # This helped me out here: https://stackoverflow.com/questions/15558392/how-can-i-check-if-character-in-a-string-is-a-letter-python
-                if (self.correct_num_list[number_on_list].isalpha()):
-                    print("You must input a number instead of a letter!")
-                    break
-                elif self.correct_num_list[number_on_list] == self.input_list[number_on_list]:
+                if self.correct_num_list[number_on_list] == self.input_list[number_on_list]:
                     print("#", i, " Correct!")
                     total_correct += 1
                 elif self.correct_num_list[number_on_list] < self.input_list[number_on_list]:
@@ -100,7 +123,7 @@ class pin_game:
                     print("#", i, " More")
 
                 if self.debug_mode_on:
-                    print(total_correct)
+                    print("Correct so far... " + str(total_correct))
 
             self.input_list = []            # Erase the entire input list 
             self.counter -= 1         # Counter minus one
@@ -135,7 +158,7 @@ class pin_game:
                 self.input_list = [ ]      # deletes guessing list
                 if self.debug_mode_on:
                     # prints and checks if list is deleted
-                    print(self.input_list)
+                    print("List should be empty:", self.input_list)
 
         # User didn't put enough numbers for the pin
         # guess() should now handle this error
@@ -152,6 +175,8 @@ class pin_game:
         except:
             print("We don't know what happened...")
             del self.input_list[0:]
+
+
 
     def score(self):        # Prints scoreboard
         print("\nScoreboard\n", "_"*10, "\n Wins:", self.win,
