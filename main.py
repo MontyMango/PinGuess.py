@@ -11,6 +11,7 @@ class pin_game:
         # win / loss count (Safe to change, but if you do, you are a cheater!)
         self.win = 0
         self.loss = 0
+        self.ratio = 0      # win / loss | Don't change to it! You will get divide by 0 error!
 
         # Guessing strings
         self.n = 0000
@@ -23,8 +24,8 @@ class pin_game:
         # debug (-1 to activate)
         self.debug_mode_on = False
 
-        # self.ratio = self.win / self.loss
 
+    # DEBUG: Mainly used to tests and input tests on screen while playing
     def toggledebugmode(self):
         if self.debug_mode_on:
             self.debug_mode_on = False
@@ -33,6 +34,8 @@ class pin_game:
             self.debug_mode_on = True
             print("Debug mode on")
 
+
+    # Pick a brand new number
     def switchnums(self):
         self.n = randrange(1000, 9999)   # Random number from 1000 - 9999
 
@@ -46,10 +49,10 @@ class pin_game:
                 print(self.correct_num_list)
 
         self.counter = 5                # Sets counter back to 5
-        print("Ready to play! If you want to quit, do Ctrl + C to exit the game\n\n")
+        print("Ready to play! If you want to quit, hold Ctrl + C to exit the game\n\n")
 
 
-
+    # This is where the game mainly takes place in this loop.
     def guess(self):
         while (self.counter != 0):
             print("\n\nGuesses Left: " + str(self.counter))
@@ -70,7 +73,7 @@ class pin_game:
                 print("You need to input a 4 pin number")
 
 
-
+    # Converts the input into a list
     def put_into_input_list(self):
         for f in self.inp1:         # Coverts guess into list
             self.input_list.append(f)
@@ -78,13 +81,20 @@ class pin_game:
                 print("Input List:", self.input_list)      # Checks if numbers made it on list
 
 
-
+    # DEBUG FEATURE: Shows the answer
     def show_answer(self):
         if self.debug_mode_on:
             print(self.n)
         else:
             print("You cheater! You are not going to get the answer!")
 
+
+    # Returns win / loss ratio
+    def calculate_ratio(self):
+        if self.loss == 0:
+            return self.win / 1
+        else:
+            return self.win / self.loss
 
 
     # Checks if the list is an integer list
@@ -99,7 +109,7 @@ class pin_game:
             if (self.input_list[num_in_list].isalpha()):
                 if(self.debug_mode_on):
                     print("! - check_if_valid_list breaking out! See ya later!")
-                print("You must input a number instead of a letter!")
+                print("You inputted a letter! You must input a number!")
                 del self.input_list[0:]     # Clear list
                 return False
         return True
@@ -125,10 +135,10 @@ class pin_game:
                 if self.debug_mode_on:
                     print("Correct so far... " + str(total_correct))
 
-            self.input_list = []            # Erase the entire input list 
-            self.counter -= 1         # Counter minus one
+            self.input_list = []        # Erase the entire input list 
+            self.counter -= 1           # Counter minus one
 
-            if total_correct == 4:  # If you win
+            if total_correct == 4:      # If you win
                 print("\nWow, you're so good at this.")
                 sleep(5)
                 self.win += 1
@@ -142,7 +152,7 @@ class pin_game:
                 self.correct_num_list = [ ]     # deletes automated list
                 self.switchnums()
 
-            elif self.counter == 0:   # If you run out of guesses
+            elif self.counter == 0:   # If the guesses run out
                 print("Game over...")
                 sleep(2)
                 print("The correct numbers for this is ", self.n)
@@ -155,7 +165,7 @@ class pin_game:
                 self.switchnums()
 
             else:
-                self.input_list = [ ]      # deletes guessing list
+                self.input_list = [ ]      # cleans guessing list
                 if self.debug_mode_on:
                     # prints and checks if list is deleted
                     print("List should be empty:", self.input_list)
@@ -180,7 +190,8 @@ class pin_game:
 
     def score(self):        # Prints scoreboard
         print("\nScoreboard\n", "_"*10, "\n Wins:", self.win,
-              "\n Losses:", self.loss, "\n", "_"*10)
+              "\n Losses:", self.loss, "\n",
+               "Ratio:", self.calculate_ratio(), "\n", "_"*10)
 
 
 
