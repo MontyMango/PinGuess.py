@@ -3,6 +3,7 @@ from time import sleep
 
 
 class pin_game:
+    # TODO: Evalulate and split __init__'s settings into it's own function
     def __init__(self):
         # Game Settings
         # Difficulty (0 = easy (5 guesses), 1 = medium (4 guesses), 2 = hard (3 gueses))
@@ -39,6 +40,7 @@ class pin_game:
             "Rats!!! That was a hard one. Don't give up! You got the next one!"
         ]
 
+    # TODO: PUT IN: functions/settings.py
     # DEBUG: Mainly used to tests and input tests on screen while playing
     def toggledebugmode(self):
         if self.debug_mode_on:
@@ -48,7 +50,7 @@ class pin_game:
             self.debug_mode_on = True
             print("Debug mode on")
 
-
+    # TODO: PUT IN: functions/operations.py
     # Pick a brand new number
     def switchnums(self):
         self.n = randrange(1000, 9999)   # Random number from 1000 - 9999
@@ -69,7 +71,7 @@ class pin_game:
         
         print("Ready to play! If you want to quit, Ctrl + C to exit the game\n\n")
 
-
+    # TODO: PUT IN: functions/gameplay.py
     # This is where the game mainly takes place in this loop.
     def guess(self):
         while (self.counter != 0):
@@ -98,6 +100,7 @@ class pin_game:
                 quit()                          # This helped me out with quitting the program: https://stackoverflow.com/questions/73663/how-do-i-terminate-a-script#73673
 
 
+    # TODO: PUT IN: functions/operations.py
     # Converts the input into a list
     def put_into_input_list(self, inputList):
         for f in inputList:         # Coverts guess into list
@@ -105,28 +108,28 @@ class pin_game:
             if self.debug_mode_on:
                 print("Input List:", self.input_list)      # Checks if numbers made it on list
 
-
+    # TODO: PUT IN: functions/display.py
     # DEBUG FEATURE: Shows the answer- uh I mean a number that is DEFINITELY NOT the answer
     def show_answer(self):
         if self.debug_mode_on:  print(self.n)
         else:                   print("You cheater! You are not going to get the answer!")
 
-
+    # TODO: PUT IN: functions/operations.py
     # Returns win / loss ratio
     def calculate_ratio(self):
         # Prevents divde by 0 error (or the sky from falling) from happening 
         if self.loss == 0:  return self.win / 1
         else:               return self.win / self.loss
 
-
+    # TODO: PUT IN: functions/display.py
     # Chooses a positive message to print out onto the console when the user wins
     def printPositiveMessage(self): print(choice(self.positive_messages) + "\n")
 
-
+    # TODO: PUT IN: functions/display.py
     # Chooses a loss message to print out when the user losses
     def printLossMessage(self):     print(choice(self.loss_messages) + "\n")
 
-
+    # TODO: PUT IN: functions/gameplay.py?
     #region Checks if the list is an integer list
     def check_if_valid_list(self):
         for num_in_list in range(0,4):
@@ -146,6 +149,7 @@ class pin_game:
     #endregionn
 
 
+    # TODO: PUT IN: functions/gameplay.py
     #region Checks guessed number
     def check(self):
         print("\nResults:")
@@ -215,6 +219,7 @@ class pin_game:
             del self.input_list[0:]
     #endregion
 
+    # TODO: PUT IN: functions/display.py
     #region Print score
     def score(self):        # Prints scoreboard
         print("\nScoreboard\n", "_"*10, "\n Wins:", self.win,
